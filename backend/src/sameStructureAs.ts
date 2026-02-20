@@ -6,24 +6,21 @@
  *   [1, [1, 1]] vs [2, [2, 2]] → true
  *   [1, [1, 1]] vs [[2, 2], 2] → false
  */
-export function sameStructureAs(
-  thisArray: unknown,
-  other: unknown,
-): boolean {
+export function sameStructureAs(thisArray: unknown, other: unknown): boolean {
   // The following conditional is a specific case for the API
   // it should be removed when the API is fixed to begin
-  // this portion of the interview challenge\
-
-  if (typeof thisArray !== typeof other) {
-    return false;
-  }
+  // this portion of the interview challenge
 
   let thisIsArray = Array.isArray(thisArray);
   let otherIsArray = Array.isArray(other);
-  let areTheyTheSame = false;
+  let areTheyTheSame = true;
 
   if (!thisIsArray && !otherIsArray) {
     return true;
+  }
+
+  if (typeof thisArray !== typeof other) {
+    return false;
   }
 
   if (thisIsArray !== otherIsArray) {
@@ -38,7 +35,12 @@ export function sameStructureAs(
     for (let i = 0; i < thisArray.length; i++) {
       const currentThis = thisArray[i];
       const currentOther = other[i];
-      areTheyTheSame = sameStructureAs(currentThis, currentOther);
+
+      const areThey = sameStructureAs(currentThis, currentOther);
+
+      if (areThey === false) {
+        areTheyTheSame = false;
+      }
     }
   }
 
