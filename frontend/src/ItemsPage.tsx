@@ -42,7 +42,6 @@ export function ItemsPage() {
   if (data == null) return null;
 
   const { sameStructure, items } = data;
-  // Frontend expects .items; backend bug returns .itmes → items is undefined and .map throws
 
   return (
     <div>
