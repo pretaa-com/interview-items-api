@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-02-20T19:48:48.336Z",
+  "os": {
+    "platform": "darwin",
+    "name": "macOS",
+    "version": "15.7.3",
+    "arch": "arm64"
+  },
+  "ide": [
+    {
+      "name": "Editor (from $EDITOR)",
+      "evidence": "vi"
+    }
+  ],
+  "aiTooling": [
+    {
+      "name": "Cursor (in PATH)",
+      "evidence": "cursor command available",
+      "confidence": "medium"
+    }
+  ],
+  "interviewCheatSoftware": [
+    {
+      "name": "None detected",
+      "evidence": "No known interview-assist software detected",
+      "confidence": "none"
+    }
+  ],
+  "git": {
+    "branch": "Unknown",
+    "commitCount": 0,
+    "hasUncommittedChanges": false,
+    "remoteUrl": "Unknown"
+  },
+  "nodeVersion": "v22.21.1",
+  "npmVersion": "10.9.4"
+}

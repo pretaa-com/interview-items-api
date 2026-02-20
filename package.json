@@ -1,0 +1,12 @@
+{
+  "name": "interview-items-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Technical interview repository for Items API & Structure Comparison",
+  "scripts": {
+    "detect": "node scripts/detect-environment.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
