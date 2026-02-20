@@ -6,11 +6,11 @@ This document provides instructions for interviewers conducting the technical in
 
 ## Overview
 
-This interview consists of two main tasks:
-1. **Fix a backend API bug** (typo in response key) so the frontend works
-2. **Implement the `sameStructureAs` algorithm** to compare array structures
+This interview has two parts:
+1. **Fix a backend API bug** (typo in response key) — *acclimation only*. Get the candidate into the codebase and to a working frontend quickly. **This is not the main evaluation.** Be lenient; if needed, guide them to the solution so they can move on.
+2. **Implement the `sameStructureAs` algorithm** — *the real assessment*. This is where you evaluate problem-solving, recursion, and code quality.
 
-The candidate will work in a branch, commit their progress, and submit their solution via pull request.
+**Goal:** Spend minimal time on the typo fix so the candidate can focus on the algorithm. They will work in a branch, commit their progress, and submit via pull request.
 
 ---
 
@@ -37,6 +37,7 @@ The candidate will work in a branch, commit their progress, and submit their sol
 ### Step 1: Initial Setup (5 minutes)
 
 **Instruct the candidate to:**
+**Important:** Do **not** provide the candidate with explicit command-line instructions for these steps. This is crucial for assessing their ability to interface with git and their familiarity with standard git workflows.
 
 1. Clone the repository
 2. Create a new branch: `git checkout -b candidate/[their-name]`
@@ -50,44 +51,28 @@ The candidate will work in a branch, commit their progress, and submit their sol
 
 ---
 
-### Step 2: Problem Discovery (10-15 minutes)
+### Step 2: Problem Discovery + typo fix (max 10–15 minutes total)
 
-**Expected behavior:**
-- Candidate runs backend (`cd backend && npm run dev`)
-- Candidate runs frontend (`cd frontend && npm run dev`)
-- Candidate opens the app in browser and sees an error (e.g., "Cannot read property 'map' of undefined")
-- Candidate investigates the error and discovers the backend returns `itmes` instead of `items`
+🚨 **This step is acclimation, not the main evaluation.** Get them to the backend algorithm ASAP. 🚨
 
-**What to observe:**
-- How they debug the frontend error
-- Whether they check browser DevTools/console
-- Whether they inspect the network requests
-- How they trace the issue to the backend
+- **Keep it short:** Do **not** spend more than 10–15 minutes on the frontend error + typo fix combined.
+- **Be collaborative:** Encourage open discussion. If they haven’t found the issue (wrong response key) within that window, **guide them directly to the solution** (e.g. point them to the backend route or the typo). Don’t let them spin—the goal is to have them start the algorithm with enough time.
+- **No penalty:** The real assessment is `sameStructureAs`. Don’t penalize candidates if React/frontend debugging isn’t their strength; it’s fine if fixing the backend route is collaborative.
 
-**Guidance if stuck:**
-- "What does the browser console show?"
-- "Have you checked the network tab to see what the API returns?"
-- "What does the frontend code expect vs what it receives?"
+**Expected behavior (if they get there on their own):**
+- Candidate runs backend and frontend, opens the app, sees an error (e.g. "Cannot read property 'map' of undefined").
+- They investigate (console, network tab) and discover the backend returns `itmes` instead of `items`.
+
+**If they’re stuck:** Use light prompts first ("What does the browser console show?" / "What does the API return in the network tab?"). If they’re still stuck as you approach the time limit, point them to `backend/src/routes/items.ts` and the typo so they can fix it and move on.
 
 ---
 
-### Step 3: Fix the Typo (5 minutes)
+### Step 3: Typo fix (part of Step 2 window — keep brief)
 
-**Expected solution:**
-- Candidate finds `backend/src/routes/items.ts`
-- Changes `itmes` to `items` in the response
-- Frontend now loads and shows "Structure match: Yes" with the items list
+Once the candidate knows the issue (wrong key in the backend response), the fix is straightforward: change `itmes` to `items` in `backend/src/routes/items.ts`. Frontend should then show "Structure match: Yes" and the items list.
 
-**What to observe:**
-- Do they test the fix?
-- Do they verify the frontend works?
-- Do they commit this fix separately or wait?
-
-**Optional:** You may ask them to commit this fix:
-```bash
-git add backend/src/routes/items.ts
-git commit -m "Fix typo: itmes -> items"
-```
+- **Keep it brief.** If they need a nudge ("the key name in the JSON is misspelled"), give it. The goal is to have the app working so they can start the algorithm.
+- **Optional:** You may suggest they commit this fix before moving on (e.g. `git add backend/src/routes/items.ts` and `git commit -m "Fix typo: itmes -> items"`).
 
 ---
 
@@ -182,12 +167,13 @@ git commit -m "Fix typo: itmes -> items"
 
 ### 1. Review the Code
 
-**Check for:**
-- ✅ Typo fix (`itmes` → `items`)
-- ✅ `sameStructureAs` implementation passes all 29 tests
+**Primary focus: `sameStructureAs` implementation**
+- ✅ `sameStructureAs` passes all 29 tests
 - ✅ Code quality (readability, comments, structure)
 - ✅ Edge cases handled (empty arrays, deep nesting, mixed types)
-- ✅ No hardcoded solutions or test-specific logic
+- ✅ No hardcoded or test-specific logic
+
+**Secondary (acclimation):** Typo fix (`itmes` → `items`) should be present; do not weight this heavily in evaluation.
 
 ### 2. Review the Environment Detection
 
@@ -213,46 +199,43 @@ git commit -m "Fix typo: itmes -> items"
 
 ### 4. Evaluate the Solution
 
-**Scoring considerations:**
+**Weight the evaluation on the `sameStructureAs` implementation.** The typo fix is acclimation; do not downgrade for needing help there or for weak frontend debugging.
+
+**Scoring considerations (focused on the algorithm):**
 
 **Excellent (4/4):**
-- All tests pass
+- All 29 tests pass
 - Clean, readable recursive implementation
-- Handles all edge cases
-- Good code organization
-- Appropriate comments
+- Handles all edge cases (empty arrays, deep nesting, mixed types)
+- Good code organization and appropriate comments
 - No test-specific hacks
 
 **Good (3/4):**
 - All tests pass
 - Correct algorithm but could be cleaner
-- Most edge cases handled
-- Minor issues with code quality
+- Most edge cases handled; minor code quality issues
 
 **Fair (2/4):**
-- Most tests pass (may miss edge cases)
-- Algorithm works but has issues
+- Most tests pass (may miss some edge cases)
+- Algorithm works but has structural or clarity issues
 - Some hardcoded cases or test-specific logic
-- Code quality issues
 
 **Needs Improvement (1/4):**
 - Many tests fail
-- Incorrect algorithm approach
-- Significant bugs or missing functionality
-- Poor code quality
+- Wrong algorithm approach or significant bugs
+- Missing core functionality or very poor code quality
 
 ---
 
 ## Common Issues & Solutions
 
-### Issue: Candidate doesn't see frontend error
+### Issue: Candidate doesn't see frontend error or can't find the typo
 
 **Possible causes:**
-- Backend not running
-- Wrong port/proxy configuration
-- Browser cache
+- Backend not running, wrong port/proxy, or browser cache
+- They’re not used to frontend debugging (console/network tab)
 
-**Solution:** Verify backend is running on port 3001, frontend on 5173, and check browser console.
+**Solution:** Give brief prompts (console, network tab, "what key does the API return?"). If they’re still stuck as you approach the 10–15 minute mark, **guide them to the solution** (e.g. point to the backend route or the typo) so they can fix it and start the algorithm. Do not extend this phase; protecting time for `sameStructureAs` is the priority.
 
 ### Issue: Tests pass but UI doesn't work
 
@@ -286,19 +269,17 @@ git commit -m "Fix typo: itmes -> items"
 ## Time Management
 
 **Recommended timeline:**
-- **Setup:** 5 minutes
-- **Problem discovery:** 10-15 minutes
-- **Fix typo:** 5 minutes
-- **Implement algorithm:** 30-45 minutes
-- **Verification:** 5-10 minutes
-- **Submission:** 5 minutes
+- **Setup:** ~5 minutes
+- **Problem discovery + typo fix (combined):** **max 10–15 minutes** — then guide them if needed so they move on
+- **Implement `sameStructureAs`:** **30–45 minutes** (bulk of the interview)
+- **Verification:** 5–10 minutes
+- **Submission:** ~5 minutes
 
-**Total:** ~60-85 minutes
+**Total:** ~60–85 minutes
 
-**If candidate is running behind:**
-- After 60 minutes, check progress
-- If typo fixed but algorithm incomplete, focus on getting a working solution (even if not all tests pass)
-- If both complete, allow time for verification
+**Priorities:**
+- **Protect time for the algorithm.** If the candidate is still on the frontend/typo after ~15 minutes, guide them to the solution and transition to Step 4.
+- If they’re behind later: typo fixed but algorithm incomplete → focus on a working solution (even if not all tests pass). The algorithm is what you’re evaluating.
 
 ---
 
@@ -326,11 +307,11 @@ During or after the interview, you may ask:
 
 ## Notes for Interviewers
 
-- **Be supportive:** This is a learning opportunity, not just an assessment
-- **Allow questions:** Candidates should feel comfortable asking for clarification
-- **Observe process:** How they debug, test, and iterate is often more valuable than the final solution
-- **Use detection data wisely:** Environment detection is one signal, not definitive proof of tool usage
-- **Focus on problem-solving:** A candidate who asks good questions and iterates may be stronger than one who gets it right immediately
+- **Be lenient on the frontend/typo:** That part is for acclimation. Get the candidate to the backend algorithm quickly; guide them if they’re stuck so the main evaluation has enough time.
+- **Be supportive:** This is a learning opportunity, not just an assessment. Allow questions and clarification.
+- **Observe process:** For the algorithm, how they reason, test, and iterate is often as important as the final solution.
+- **Use detection data wisely:** Environment detection is one signal, not definitive proof of tool usage.
+- **Focus on problem-solving:** A candidate who asks good questions and iterates on the algorithm may be stronger than one who gets it right immediately.
 
 ---
 
