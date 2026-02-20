@@ -6,27 +6,31 @@
  *   [1, [1, 1]] vs [2, [2, 2]] → true
  *   [1, [1, 1]] vs [[2, 2], 2] → false
  */
-export function sameStructureAs(thisArray: unknown[], other: unknown): boolean {
-  // The following conditional is a specific case for the API
-  // it should be removed when the API is fixed to begin
-  // this portion of the interview challenge
-  if (
-    Array.isArray(other) &&
-    thisArray.length === 2 &&
-    other.length === 2 &&
-    !Array.isArray(thisArray[0]) &&
-    !Array.isArray(other[0]) &&
-    Array.isArray(thisArray[1]) &&
-    Array.isArray(other[1]) &&
-    thisArray[1].length === 2 &&
-    other[1].length === 2 &&
-    !Array.isArray(thisArray[1][0]) &&
-    !Array.isArray(thisArray[1][1]) &&
-    !Array.isArray(other[1][0]) &&
-    !Array.isArray(other[1][1])
-  ) {
-    return true;
+export function sameStructureAs(
+  thisArray: unknown[], 
+  other: unknown
+): boolean {
+  if (!Array.isArray(other)) {
+    return false;
   }
-  // TODO: implement full algorithm for all cases
-  return false;
+
+  const otherArray: unknown[] = other as unknown[];
+  if (otherArray.length != thisArray.length) {
+    return false;
+  }
+
+  for (var i in thisArray) {
+    const thisElement = thisArray[i];
+    const otherElement = otherArray[i];
+
+    if (!Array.isArray(thisElement) && !Array.isArray(otherElement)) {
+      continue;
+    }
+
+    if (!sameStructureAs(thisElement as unknown[], otherElement)) {
+      return false;
+    }
+  }
+
+  return true;
 }
