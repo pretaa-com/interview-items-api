@@ -6,27 +6,41 @@
  *   [1, [1, 1]] vs [2, [2, 2]] → true
  *   [1, [1, 1]] vs [[2, 2], 2] → false
  */
-export function sameStructureAs(thisArray: unknown[], other: unknown): boolean {
+export function sameStructureAs(
+  thisArray: unknown,
+  other: unknown,
+): boolean {
   // The following conditional is a specific case for the API
   // it should be removed when the API is fixed to begin
-  // this portion of the interview challenge
-  if (
-    Array.isArray(other) &&
-    thisArray.length === 2 &&
-    other.length === 2 &&
-    !Array.isArray(thisArray[0]) &&
-    !Array.isArray(other[0]) &&
-    Array.isArray(thisArray[1]) &&
-    Array.isArray(other[1]) &&
-    thisArray[1].length === 2 &&
-    other[1].length === 2 &&
-    !Array.isArray(thisArray[1][0]) &&
-    !Array.isArray(thisArray[1][1]) &&
-    !Array.isArray(other[1][0]) &&
-    !Array.isArray(other[1][1])
-  ) {
+  // this portion of the interview challenge\
+
+  if (typeof thisArray !== typeof other) {
+    return false;
+  }
+
+  let thisIsArray = Array.isArray(thisArray);
+  let otherIsArray = Array.isArray(other);
+  let areTheyTheSame = false;
+
+  if (!thisIsArray && !otherIsArray) {
     return true;
   }
-  // TODO: implement full algorithm for all cases
-  return false;
+
+  if (thisIsArray !== otherIsArray) {
+    return false;
+  }
+
+  if (Array.isArray(thisArray) && Array.isArray(other)) {
+    if (thisArray.length !== other.length) {
+      return false;
+    }
+
+    for (let i = 0; i < thisArray.length; i++) {
+      const currentThis = thisArray[i];
+      const currentOther = other[i];
+      areTheyTheSame = sameStructureAs(currentThis, currentOther);
+    }
+  }
+
+  return areTheyTheSame;
 }
