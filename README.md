@@ -52,10 +52,9 @@ Implement a function (or method) that returns **true** if and only if `other` is
 | `[1, '[', ']']` | `['[', ']', 1]` | `true` (same lengths, no nested arrays) |
 | `[1, 2]`        | `[[3], 3]`      | `false` (different structure) |
 
-You can implement either:
+**Default (Node/Bun):** Implement the algorithm in `backend/src/sameStructureAs.ts` so the backend and full-stack flow work. You can use either a **standalone function** `sameStructureAs(thisArray, other)` (the route already uses this) or the **method** `Array.prototype.sameStructureAs(other)` and have the route call it as `a.sameStructureAs(b)`.
 
-- A **standalone function** `sameStructureAs(thisArray, other)` in `backend/src/sameStructureAs.ts` (the route already uses this), or  
-- The **method** `Array.prototype.sameStructureAs(other)` and have the route call it as `a.sameStructureAs(b)`. The README leaves the route using the standalone function.
+**Alternative algorithm tracks:** If you prefer to implement the same algorithm in another language (without changing the running API), use one of the templates in **`algorithm-templates/`**: Python, Kotlin, Java, C#, Go, Swift, and Rust. Each has a stub and the same 25 test cases; run that language’s tests locally. The main interview flow (fix API key, run backend + frontend) remains Node-based.
 
 ---
 
@@ -125,6 +124,7 @@ Quick overview:
 
 - **backend/** — Express + TypeScript, Vitest. Contains `sameStructureAs`, items route, and tests.
 - **frontend/** — React (Vite) + TypeScript. Single page that calls the API and displays items and structure match status.
+- **algorithm-templates/** — Optional algorithm tracks in Python, Kotlin, Java, C#, Go, Swift, and Rust (stub + tests per language). See `algorithm-templates/README.md` for how to run each.
 - **scripts/** — Environment detection script (`detect-environment.js`) for interview metadata collection.
 
 ---
