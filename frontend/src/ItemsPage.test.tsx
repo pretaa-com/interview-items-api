@@ -32,4 +32,18 @@ describe("ItemsPage", () => {
     expect(screen.getByText("No")).toBeInTheDocument();
     expect(screen.getByText(/Structure does not match/)).toBeInTheDocument();
   });
+
+  it("does not crash when sameStructure is true but items is undefined (e.g. backend typo)", async () => {
+    vi.spyOn(itemsApi, "compareStructureAndGetItems").mockResolvedValue({
+      sameStructure: true,
+      // items omitted (e.g. backend still returning wrong key)
+    });
+
+    render(<ItemsPage />);
+    await screen.findByText("Structure match:");
+
+    expect(screen.getByText("Yes")).toBeInTheDocument();
+    expect(screen.getByRole("list")).toBeInTheDocument();
+    expect(screen.getByRole("list").children).toHaveLength(0);
+  });
 });

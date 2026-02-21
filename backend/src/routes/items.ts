@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { sameStructureAs } from "../sameStructureAs.js";
 import { getItems } from "../itemsData.js";
+import type { SameStructureRequestBody } from "../types.js";
 
 export const itemsRouter = Router();
 
@@ -15,7 +16,8 @@ itemsRouter.post("/", (req: Request, res: Response) => {
     return;
   }
 
-  const sameStructure = sameStructureAs(a, b);
+  const body = req.body as SameStructureRequestBody;
+  const sameStructure = sameStructureAs(body.a, body.b);
 
   if (sameStructure) {
     // Intentional typo for interview: candidate should fix "itmes" → "items"

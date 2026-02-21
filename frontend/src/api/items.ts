@@ -5,9 +5,12 @@ export interface Item {
   name: string;
 }
 
+/**
+ * API response for POST /api/items.
+ * When sameStructure is true, the backend returns an `items` array.
+ */
 export interface CompareStructureResponse {
   items?: Item[];
-  itmes?: Item[];
   sameStructure: boolean;
   error?: string;
 }

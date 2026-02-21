@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { sameStructureAs } from "./sameStructureAs.js";
+import type { StructureValue } from "./types.js";
 
 describe("sameStructureAs", () => {
   it("[1,1,1] vs [2,2,2] → true", () => {
@@ -139,5 +140,51 @@ describe("sameStructureAs", () => {
     expect(
       sameStructureAs([[1, [2, []]], [3, 4]], [[5, [6, []]], [7, 8]])
     ).toBe(true);
+  });
+
+  it("passes an array that contains an object", () => {
+    expect(
+      sameStructureAs([1, [2,3]], [{a: 4, b: 5}, [6,7]])
+    ).toBe(true);
+  });
+
+  describe("performance", () => {
+    const MAX_MS = 100;
+
+    it("completes within threshold on large flat arrays (10k elements)", () => {
+      const size = 10_000;
+      const a = Array.from({ length: size }, (_, i) => i);
+      const b = Array.from({ length: size }, (_, i) => i + 1);
+      const start = performance.now();
+      const result = sameStructureAs(a, b);
+      const elapsed = performance.now() - start;
+      expect(result).toBe(true);
+      expect(elapsed).toBeLessThan(MAX_MS);
+    });
+
+    it("completes within threshold on deep nesting (depth 100)", () => {
+      let a: StructureValue = 1;
+      let b: StructureValue = 2;
+      for (let d = 0; d < 100; d++) {
+        a = [a];
+        b = [b];
+      }
+      const start = performance.now();
+      const result = sameStructureAs(a, b);
+      const elapsed = performance.now() - start;
+      expect(result).toBe(true);
+      expect(elapsed).toBeLessThan(MAX_MS);
+    });
+
+    it("completes within threshold on wide nested arrays (100×100)", () => {
+      const row = Array.from({ length: 100 }, (_, i) => i);
+      const a = Array.from({ length: 100 }, () => [...row]);
+      const b = Array.from({ length: 100 }, () => [...row]);
+      const start = performance.now();
+      const result = sameStructureAs(a, b);
+      const elapsed = performance.now() - start;
+      expect(result).toBe(true);
+      expect(elapsed).toBeLessThan(MAX_MS);
+    });
   });
 });

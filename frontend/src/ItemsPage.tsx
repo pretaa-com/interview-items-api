@@ -41,7 +41,7 @@ export function ItemsPage() {
   if (error) return <p>Error: {error}</p>;
   if (data == null) return null;
 
-  const { sameStructure, items } = data;
+  const { sameStructure, items = [] } = data;
 
   return (
     <div>
@@ -51,7 +51,7 @@ export function ItemsPage() {
       </p>
       {sameStructure ? (
         <ul>
-          {items!.map((item) => (
+          {items.map((item) => (
             <li key={item.id}>{item.name}</li>
           ))}
         </ul>
