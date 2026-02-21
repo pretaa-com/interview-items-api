@@ -17,3 +17,34 @@ frontend/dist
 .vscode/
 *.swp
 *.swo
+
+# Algorithm templates — Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.eggs/
+.pytest_cache/
+
+# Algorithm templates — Kotlin / Java (Gradle)
+.gradle/
+
+# Algorithm templates — C#
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Algorithm templates — Go
+*.exe
+*.test
+*.out
+
+# Algorithm templates — Swift (SPM)
+.build/
+.swiftpm/
+
+# Algorithm templates — Rust
+target/

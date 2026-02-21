@@ -101,7 +101,7 @@ class SameStructureAsTest {
 
     @Test
     fun deepSingleChainFiveLevelsTrue() {
-        assertEquals(true, sameStructureAs(listOf(listOf(listOf(listOf(listOf(1))))), listOf(listOf(listOf(listOf(listOf(2))))))))
+        assertEquals(true, sameStructureAs(listOf(listOf(listOf(listOf(listOf(1))))), listOf(listOf(listOf(listOf(listOf(2)))))))
     }
 
     @Test
