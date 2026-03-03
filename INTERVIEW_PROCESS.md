@@ -14,6 +14,28 @@ This interview has two parts:
 
 ---
 
+## Language choice for the algorithm
+
+Candidates can implement the **same-structure algorithm** in either the **default** environment or an **alternative language** from `algorithm-templates/`.
+
+### Default track (Node/TypeScript)
+
+- **Where:** `backend/src/sameStructureAs.ts`
+- **Flow:** Fix the API typo, then implement `sameStructureAs` in the backend. Backend tests (`npm test`) and the running API/UI are used to verify.
+- **Best for:** Candidates who prefer JavaScript/TypeScript or who you want to see in the full-stack context.
+
+### Alternative language track
+
+- **Where:** `algorithm-templates/` — one folder per language: **Python**, **Kotlin**, **Java**, **C#**, **Go**, **Swift**, **Rust**.
+- **What’s in each folder:** A stub for the same algorithm (same contract: compare two values for “same nesting structure”), plus the same 25 test cases ported to that language’s test runner.
+- **Flow:** Candidate still does the typo fix so the frontend works (acclimation). For the algorithm, they **choose one language** from `algorithm-templates/`, implement the stub in that folder, and run **that language’s tests** (e.g. `pytest`, `./gradlew test`, `dotnet test`, `go test`, `swift test`, `cargo test`). See `algorithm-templates/README.md` for the exact run command per language.
+- **What doesn’t apply:** The live API does *not* call the alternative-language code; the backend stays Node. Verification is “all tests pass in the chosen template,” not “API returns correct `sameStructure`.”
+- **Best for:** Candidates who are stronger or more comfortable in Python, Kotlin, Java, C#, Go, Swift, or Rust. Evaluation is the same (correctness and code quality); only the language and test runner differ.
+
+**Before the interview:** Decide whether you’re offering the alternative. If yes, tell the candidate they may use the default (Node) or pick one language from `algorithm-templates/` and implement the algorithm there; point them to `algorithm-templates/README.md` for how to run tests in each language.
+
+---
+
 ## Pre-Interview Setup
 
 ### 1. Repository Preparation
@@ -29,6 +51,11 @@ This interview has two parts:
   - Repository URL (or access to clone)
   - Instructions to clone and set up locally
   - Any necessary credentials or access tokens
+
+### 3. If offering alternative languages
+
+- Point candidates to `algorithm-templates/README.md` for the list of languages and how to run tests in each (e.g. `pytest`, `./gradlew test`, `dotnet test`, `go test ./...`, `swift test`, `cargo test`).
+- Optionally, confirm one or two template languages run on your machine (e.g. `cd algorithm-templates/python && pytest`) so you can help if the candidate hits environment issues.
 
 ---
 
@@ -78,7 +105,7 @@ Once the candidate knows the issue (wrong key in the backend response), the fix 
 
 ### Step 4: Implement `sameStructureAs` (30-45 minutes)
 
-**Expected solution:**
+**If using the default track (Node/TypeScript):**
 - Candidate examines `backend/src/sameStructureAs.ts` (currently returns `false`)
 - Candidate reads the README and test cases
 - Candidate implements a recursive algorithm that:
@@ -86,6 +113,11 @@ Once the candidate knows the issue (wrong key in the backend response), the fix 
   - Compares lengths
   - Recursively compares nested arrays
   - Treats all non-arrays (numbers, strings, objects) as equivalent for structure purposes
+
+**If using an alternative language from `algorithm-templates/`:**
+- Candidate works in the chosen folder (e.g. `algorithm-templates/python/`, `algorithm-templates/go/`).
+- They implement the stub (same contract: same-structure comparison; see that folder’s README for the function name and how to run tests).
+- They run that language’s test command (see `algorithm-templates/README.md`) until all tests pass. The same 25 scenarios are covered in every language.
 
 **What to observe:**
 - Do they read the tests first to understand requirements?
@@ -109,7 +141,7 @@ Once the candidate knows the issue (wrong key in the backend response), the fix 
 
 ### Step 5: Verification (5-10 minutes)
 
-**Instruct the candidate to:**
+**If using the default track (Node/TypeScript), instruct the candidate to:**
 
 1. Run backend tests: `cd backend && npm test`
    - All tests should pass (29 tests total)
@@ -118,9 +150,14 @@ Once the candidate knows the issue (wrong key in the backend response), the fix 
    - Try a different structure request (e.g., modify `ItemsPage.tsx` temporarily) to see "Structure does not match"
 3. Verify edge cases work correctly
 
+**If using an alternative language from `algorithm-templates/`, instruct the candidate to:**
+
+1. Run the chosen language’s tests from that folder (e.g. `cd algorithm-templates/python && pytest`, or `cd algorithm-templates/go && go test ./...` — see `algorithm-templates/README.md` for each language).
+2. Confirm all tests in that template pass (same 25 scenarios as the default track).
+
 **What to observe:**
-- Do they run all tests?
-- Do they verify the UI works?
+- Do they run all tests (backend or template)?
+- If default: Do they verify the UI works?
 - Do they test edge cases?
 
 ---
@@ -167,13 +204,18 @@ Once the candidate knows the issue (wrong key in the backend response), the fix 
 
 ### 1. Review the Code
 
-**Primary focus: `sameStructureAs` implementation**
-- ✅ `sameStructureAs` passes all 29 tests
+**Primary focus: algorithm implementation**
+
+- **Default track:** Review `backend/src/sameStructureAs.ts`. All 29 backend tests should pass.
+- **Alternative language track:** Review the implementation in the chosen folder under `algorithm-templates/` (e.g. `algorithm-templates/python/same_structure_as.py`, or the equivalent file for Go, Rust, etc.). All tests in that template should pass (same 25 scenarios).
+
+**For both tracks:**
+- ✅ All relevant tests pass
 - ✅ Code quality (readability, comments, structure)
 - ✅ Edge cases handled (empty arrays, deep nesting, mixed types)
 - ✅ No hardcoded or test-specific logic
 
-**Secondary (acclimation):** Typo fix (`itmes` → `items`) should be present; do not weight this heavily in evaluation.
+**Secondary (acclimation):** Typo fix (`itmes` → `items`) should be present for the frontend to work; do not weight this heavily in evaluation.
 
 ### 2. Review the Environment Detection
 
@@ -254,6 +296,14 @@ Once the candidate knows the issue (wrong key in the backend response), the fix 
 - Off-by-one errors in recursion
 
 **Solution:** Review failing tests, check algorithm logic, verify recursion handles all cases.
+
+### Issue: Candidate using an alternative language — tests don’t run or fail
+
+**Possible causes:**
+- Missing runtime or toolchain (e.g. Python, .NET, Go, Swift, Rust not installed or not on PATH)
+- Wrong directory or wrong command (e.g. running Node tests instead of the template’s)
+
+**Solution:** Confirm they’re in the correct folder under `algorithm-templates/` and using the command from `algorithm-templates/README.md` for that language. If their environment is missing a runtime, they can switch to the default (Node) track or install the needed toolchain.
 
 ### Issue: Environment detection script fails
 
