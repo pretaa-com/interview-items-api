@@ -11,8 +11,11 @@ const SAME_STRUCTURE_PAYLOAD: [unknown[], unknown[]] = [
 
 export function ItemsPage() {
   const [data, setData] = useState<CompareStructureResponse | null>(null);
+  const [sameStructure, setSameStructure] = useState(false);
+  const [items, setItems] = useState<CompareStructureResponse["items"]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // const { sameStructure, items } = data;
 
   useEffect(() => {
     let cancelled = false;
@@ -21,7 +24,12 @@ export function ItemsPage() {
     compareStructureAndGetItems(...SAME_STRUCTURE_PAYLOAD)
       .then((result) => {
         if (!cancelled) {
+          const { sameStructure, items } = result;
+
           setData(result);
+          setSameStructure(sameStructure);
+          setItems(items || []);
+
         }
       })
       .catch((err: unknown) => {
@@ -39,9 +47,8 @@ export function ItemsPage() {
 
   if (loading) return <p>Loading…</p>;
   if (error) return <p>Error: {error}</p>;
-  if (data == null) return null;
+  if (data == null) return <p>No data received.</p>;
 
-  const { sameStructure, items } = data;
   // Frontend expects .items; backend bug returns .itmes → items is undefined and .map throws
 
   return (

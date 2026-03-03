@@ -18,8 +18,7 @@ itemsRouter.post("/", (req: Request, res: Response) => {
   const sameStructure = sameStructureAs(a, b);
 
   if (sameStructure) {
-    // Intentional typo for interview: candidate should fix "itmes" → "items"
-    res.json({ itmes: getItems(), sameStructure: true });
+    res.json({ items: getItems(), sameStructure: true });
   } else {
     res.status(200).json({ sameStructure: false });
   }
