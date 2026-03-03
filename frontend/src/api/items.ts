@@ -7,7 +7,6 @@ export interface Item {
 
 export interface CompareStructureResponse {
   items?: Item[];
-  itmes?: Item[];
   sameStructure: boolean;
   error?: string;
 }
