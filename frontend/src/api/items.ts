@@ -7,14 +7,13 @@ export interface Item {
 
 export interface CompareStructureResponse {
   items?: Item[];
-  itmes?: Item[];
   sameStructure: boolean;
   error?: string;
 }
 
 export async function compareStructureAndGetItems(
   a: unknown[],
-  b: unknown[]
+  b: unknown[],
 ): Promise<CompareStructureResponse> {
   const res = await fetch(`${API_BASE}/api/items`, {
     method: "POST",
